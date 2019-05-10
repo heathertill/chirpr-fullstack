@@ -1,0 +1,48 @@
+// to override bootstrap, write scss above the bootstrap import
+$theme-colors: (
+    'blueCh': rgba(126, 171, 206, 0.7)
+);
+
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
+
+$font-body: 'Open Sans Condensed', sans-serif;
+$font-header: 'Alegreya SC', serif;
+$text-color: darkgrey;
+$main-color: gainsboro;
+
+body {
+    font-family: $font-body;
+    background-color: $main-color;
+    color: $text-color;
+}
+
+.logoBar {
+    border-style: solid;
+    border-width: 40px;
+    border-color: $main-color;
+}
+
+.header {
+    font-family: $font-header;
+    background-color: white;
+    font-size: 5.2em;
+}
+
+p {
+    background-color: white;
+}
+
+.chirpInput {
+    height: 300px;
+}
+
+.input-border {
+    border: none;
+}
+
+.btn {
+    border: none;
+    font-family: $font-body;
+    color: white
+}
