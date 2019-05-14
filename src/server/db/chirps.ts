@@ -18,7 +18,6 @@ const deleteChirp = async (id: number) => Query('DELETE FROM chirps WHERE id = ?
 //     })
 // }
 
-
 // export const one = async (id: number) => {
 //     let query = 'SELECT u.name, c.text FROM chirps c JOIN users u ON u.id = c.userid WHERE c.id = ?';
 //     return new Promise((resolve, reject) => {

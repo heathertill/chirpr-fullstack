@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-export interface IAdminProps extends RouteComponentProps<{ id: string }> { }
+export interface IAdminProps extends RouteComponentProps { }
 
 export interface IAdminState {
-        user: string;
+        id: number,
+        name: string;
         text: string
 }
 
@@ -12,7 +13,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     constructor(props: IAdminProps) {
         super(props);
         this.state = {
-            user: "",
+            id: null,
+            name: "",
             text: ""
         };
         this.handleEdit = this.handleEdit.bind(this);
@@ -20,20 +22,20 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     }
 
     async componentDidMount() {
-        let id = this.props.match.params.id
+        let id = this.state.id
         try {
             let resChirp = await fetch(`/api/chirps/${id}`);
             let chirp = await resChirp.json();
-            this.setState({ user: chirp.user, text: chirp.text })
+            this.setState({ name: chirp.name, text: chirp.text })
         } catch (err) {
             console.log(err)
         }
     }
 
     async handleEdit(e: React.MouseEvent<HTMLButtonElement>) {
-        let id = this.props.match.params.id;
+        let id = this.state.id;
         let data = {
-            user: this.state.user,
+            name: this.state.name,
             text: this.state.text
         }
         e.preventDefault();
@@ -52,7 +54,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     };
 
     async handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
-        let id = this.props.match.params.id;
+        let id = this.state.id;
         try {
             await fetch(`/api/chirps/${id}`, {
                 method: 'DELETE'
@@ -72,7 +74,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <>
                 <div className="card col-md-10 border">
                     <div className="card-body">
-                        <h3 className="card-title">{this.state.user}</h3>
+                        <h3 className="card-title">{this.state.name}</h3>
                         <div className="mb-3">
                             <label className="mr-2" htmlFor="text">Edit text:</label>
                             <input

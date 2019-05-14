@@ -17,6 +17,7 @@ router.get('/api/chirps', async (req, res) => {
     }
 });
 
+
 router.get('/api/chirps/:id', async (req, res) => {
     try {
         res.json((await db.Chirps.one(req.params.id))[0]);

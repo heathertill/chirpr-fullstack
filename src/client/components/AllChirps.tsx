@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export interface AllChirpsProps { }
 
 export interface AllChirpsState {
-    chirps: { id: string, user: string, text: string }[];
+    chirps: { id: string, name: string, text: string }[];
 }
 
 class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
@@ -15,13 +15,14 @@ class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
         };
     }
     
+    
     async componentWillMount() {
         let res = await fetch('/api/chirps');
         let data = await res.json();
         let chirps = Object.keys(data).map(key => {
             return {
                 id: key,
-                user: data[key].user,
+                name: data[key].name,
                 text: data[key].text
             }
         })
@@ -38,7 +39,7 @@ class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
                         return (
                             <div key={chirp.id} className="card p-2 m-3 shadow">
                                 <div className="card-body">
-                                    <h4 className="card-title">{chirp.user}</h4>
+                                    <h4 className="card-title">{chirp.name}</h4>
                                     <p className="card-text">{chirp.text}</p>
                                 </div>
                                 <div className="text-right">
