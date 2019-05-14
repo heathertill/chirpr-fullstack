@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as express from 'express';
-import routes from './routes';
+import apiRouter from './routes';
 
 const app = express();
 
@@ -9,10 +9,10 @@ console.log(p);
 
 app.use(express.static(p));
 app.use(express.json());
-app.use(routes);
+app.use(apiRouter);
 
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3000; // process.env.PORT is used for deployment (i.e. Heroku)
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);
 });

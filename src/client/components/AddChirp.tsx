@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom'; //alerts that this comp will be accessed by router and has access to router props
 
 export interface AddChirpProps extends RouteComponentProps { }
 
