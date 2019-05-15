@@ -44,7 +44,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     }
 
     async handleEdit(e: React.MouseEvent<HTMLButtonElement>) {
-        let id = this.state.chirp.id
+        let id = this.props.match.params.id
         let data = {
             name: this.state.chirp.name,
             text: this.state.chirp.text
