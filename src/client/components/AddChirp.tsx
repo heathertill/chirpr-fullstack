@@ -21,6 +21,7 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
     async handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         const data = { user: this.state.user, text: this.state.text }
         e.preventDefault();
+        console.log(data);  ///remove
         if (this.state.user && this.state.text) {
             try {
                 await fetch('/api/chirps/', {
