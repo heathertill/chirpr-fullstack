@@ -25,7 +25,16 @@ router.get('/api/chirps/:id', async (req, res) => {
         console.log(err);
         res.sendStatus(500);
     }
-})
+});
+
+router.get('/api/users/:name', async (req, res) => {
+    try {
+        res.json((await db.Users.userName(req.params.name))[0])
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
 
 router.post('/api/chirps', async (req, res) => {
     try {

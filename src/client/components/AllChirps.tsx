@@ -15,27 +15,7 @@ class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
         };
     }
 
-    // async componentWillMount() {
 
-    //     try {
-    //         await fetch('/api/chirps', {
-    //             method: 'GET',
-    //             body: JSON.stringify(data),
-    //             headers: {
-    //                 "Content_type": "application/json"
-    //             },
-    //         });
-    //         this.setState(chirps)
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-
-    //     let res = await fetch('/api/chirps');
-    //     let chirps = await res.json();
-    //     console.log(chirps);
-    //     chirps.pop();
-    //     this.setState({ chirps })
-    // }
 
     async componentWillMount() {
         let res = await fetch('/api/chirps');
@@ -43,22 +23,7 @@ class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
         console.log(chirps);
         chirps.pop();
         this.setState({ chirps })
-    }
-
-    // async componentWillMount() {
-    //     let res = await fetch('/api/chirps');
-    //     let data = await res.json();
-    //     let chirps = Object.keys(data).map(key => {
-    //         return {
-    //             id: key,
-    //             name: data[key].name,
-    //             text: data[key].text
-    //         }
-    //     })
-    //     console.log(chirps);
-    //     chirps.pop();
-    //     this.setState({ chirps })
-    // }
+    };
 
     render() {
         return (

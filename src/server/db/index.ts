@@ -1,6 +1,7 @@
 import * as mysql from 'mysql';
 
 import Chirps from './chirps'
+import Users from './users'
 
 export const Connection = mysql.createConnection({
     host: 'localhost',
@@ -24,7 +25,8 @@ export const Query = (query: string, values?: Array<string | number>) => {
 }
 
 export default {
-    Chirps
+    Chirps,
+    Users
 }
 
 /// import each table from your database here

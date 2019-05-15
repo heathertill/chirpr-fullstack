@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { string } from 'prop-types';
 
 export interface IAdminProps extends RouteComponentProps<{ id: string }> { }
 
@@ -22,14 +21,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this)
     }
-
-    // async componentWillMount() {
-    //     let res = await fetch('/api/chirps');
-    //     let chirps = await res.json();
-    //     console.log(chirps);
-    //     chirps.pop();
-    //     this.setState({ chirps })
-    // }
 
     async componentDidMount() {
         let id = this.props.match.params.id
@@ -81,10 +72,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         this.state.chirp.text = value
     }
 
-    // handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {  // ts automatically binds this when function is declared in the format
-    //     this.setState({ text: e.target.value });
-    // }
-
     render() {
         return (
             <>
@@ -96,9 +83,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
                             <input
                                 className="form-control"
                                 defaultValue={this.state.chirp.text}
-                                // onChange={this.handleTextChange}
-                                type="text" // could use this inline onChange instead of function
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleTextChange(e.target.value)}
+                                type="text"
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleTextChange(e.target.value)}
                             />
                         </div>
                         <div className="text-right">
