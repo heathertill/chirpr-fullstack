@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom'; //alerts that this comp will be accessed by router and has access to router props
+import { timingSafeEqual } from 'crypto';
 
 export interface AddChirpProps extends RouteComponentProps<{ name: string }> { }
 
@@ -34,8 +35,29 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         );
     }
 
+    async checkMention(str: string) {
+        let mention = str.includes('@')
+        if (mention === true) {
+            console.log('true');
+            try {
+                let data = { userid: this.state.userid, id: this.state.id }
+                await fetch('api/mentions/', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                });
+                // this.props.history.push('/');
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            console.log('false')
+        }
+    };
+
     async handleUserName(name: string, text: string) {
-        // let name = this.props.match.params.name
         try {
             let r = await fetch(`/api/users/${name}`);
             let userid = await r.json();
@@ -46,8 +68,6 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         }
         finally {
             let data = { userid: this.state.userid, text: this.state.text }
-            // let a = this.state.userid;
-            // console.log('mathId: ', this.math(a))
             await fetch('/api/chirps/', {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -56,70 +76,10 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 },
             });
             this.props.history.push('/');
+            this.checkMention(text);
             console.log('fired')
         }
     };
-
-    math(a: number) {
-        return a * 2
-    };
-
-
-    // async handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-    //     this.handleUserName();
-    //     const data = { name: this.state.name, text: this.state.text, id: this.state.id, userid: this.state.userid }
-    //     e.preventDefault();
-
-    //     console.log(data, 'add chirp');  ///remove
-    //     if (this.state.name && this.state.text) {
-    //         try {
-
-    //             await fetch('/api/chirps/', {
-    //                 method: 'POST',
-    //                 body: JSON.stringify(data),
-    //                 headers: {
-    //                     "Content-type": "application/json"
-    //                 },
-    //             });
-    //             this.props.history.push('/')
-    //         } catch (err) {
-    //             console.log(err, 'AddChirp Error')
-    //         }
-    //     } else {
-    //         alert('Need name and text')
-    //     }
-    // }
-
-    // async handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-    //     let name = this.props.match.params.name;
-    //     const data = { name: this.state.name, text: this.state.text, id: this.state.id, userid: this.state.userid }
-    //     e.preventDefault();
-    //     try {
-    //         try {
-    //             let r = await fetch(`/api/users/${name}`);
-    //             let userid = await r.json();
-    //             this.setState(userid);
-    //             console.log(userid, 'userid')
-    //         } catch (err) {
-    //             console.log(err, 'here')
-    //         }
-    //         finally {
-    //             await fetch('/api/chirps/', {
-    //                 method: 'POST',
-    //                 body: JSON.stringify(data),
-    //                 headers: {
-    //                     "Content-type": "application/json"
-    //                 },
-    //             });
-    //             this.props.history.push('/')
-    //         }
-
-    //     } catch (err) {
-    //         console.log(err, 'there')
-    //     }
-    // }
-
-
 
 
     render() {

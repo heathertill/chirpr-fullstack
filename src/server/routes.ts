@@ -8,26 +8,30 @@ router.get('/api/hello', (req, res, next) => {
     res.json('World');
 });
 
-router.get('/api/chirps', async (req, res) => {
-    try {
-        res.json(await db.Chirps.all())
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
+
+
+router.get('/api/chirps/:id?', async (req, res) => {
+    let id = req.params.id
+    if (id) {
+        try {
+            res.json((await db.Chirps.one(id))[0]);
+        } catch (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
+    } else {
+        try {
+            res.json(await db.Chirps.all())
+        } catch (err) {
+            console.log(e);
+            res.sendStatus(500);
+        }
     }
 });
 
 
-router.get('/api/chirps/:id', async (req, res) => {
-    try {
-        res.json((await db.Chirps.one(req.params.id))[0]);
-    } catch (err) {
-        console.log(err);
-        res.sendStatus(500);
-    }
-});
 
-router.get('/api/users/:name', async (req, res) => {
+router.get('/api/users/:name?', async (req, res) => {
     try {
         res.json((await db.Users.userName(req.params.name))[0])
     } catch (err) {
@@ -35,6 +39,36 @@ router.get('/api/users/:name', async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+// router.get('/api/users/:name', async (req, res) => {
+//     try {
+//         res.json((await db.Users.newUsersName(req.params.name))[0])
+//     } catch (err) {
+//         console.log(err);
+//         res.sendStatus(500);
+//     }
+// });
+
+router.get('/api/mentions/:userid', async (req, res) => {
+    try {
+        res.json(await db.Mentions.getAllMentions(req.params.userid))
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+
+
+router.post('/api/mentions', async (req, res) => {
+    try {
+        let newMention = await db.Mentions.createMention(req.body.userid, req.body.chirpid);
+        res.json(newMention)
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+})
 
 router.post('/api/chirps', async (req, res) => {
     try {
@@ -51,7 +85,7 @@ router.put('/api/chirps/:id', async (req, res) => {
         // let id = req.params.id;
         // let text = req.body.text;
         res.json(await db.Chirps.updateChirp(req.body.text, req.params.id));
-        
+
     } catch (err) {
         console.log(err);
         res.sendStatus(500);
