@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom'; //alerts that this comp will be accessed by router and has access to router props
-import { timingSafeEqual } from 'crypto';
+
 
 export interface AddChirpProps extends RouteComponentProps<{ name: string }> { }
 
@@ -27,7 +27,7 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
     handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         // this.handleUserName();
-        console.log('name:', this.state.name, 'userid:', this.state.userid);
+        console.log('name:', this.state.name, 'userid:', this.state.userid, 'id:', this.state.id);
         let name = this.state.name;
         let text = this.state.text;
         return (
@@ -35,23 +35,33 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         );
     }
 
+
+    // async checkMention(str: string) {
+    //     let mention = str.includes('@')
+    //     if (mention === true) {
+    //         console.log('true');
+    //         try {
+    //             let data = { userid: this.state.userid, id: this.state.id }
+    //             await fetch('api/mentions/', {
+    //                 method: 'POST',
+    //                 body: JSON.stringify(data),
+    //                 headers: {
+    //                     "Content-type": "application/json"
+    //                 },
+    //             });
+    //             // this.props.history.push('/');
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     } else {
+    //         console.log('false')
+    //     }
+    // };
+
     async checkMention(str: string) {
         let mention = str.includes('@')
         if (mention === true) {
             console.log('true');
-            try {
-                let data = { userid: this.state.userid, id: this.state.id }
-                await fetch('api/mentions/', {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-type": "application/json"
-                    },
-                });
-                // this.props.history.push('/');
-            } catch (err) {
-                console.log(err);
-            }
         } else {
             console.log('false')
         }
@@ -61,7 +71,7 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         try {
             let r = await fetch(`/api/users/${name}`);
             let userid = await r.json();
-            this.setState(userid);
+            this.setState(userid[0]);
             console.log('userid:',userid, 'name:', name, 'text:', text)
         } catch (err) {
             console.log(err);

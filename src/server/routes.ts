@@ -23,7 +23,7 @@ router.get('/api/chirps/:id?', async (req, res) => {
         try {
             res.json(await db.Chirps.all())
         } catch (err) {
-            console.log(e);
+            console.log(err);
             res.sendStatus(500);
         }
     }
@@ -31,7 +31,7 @@ router.get('/api/chirps/:id?', async (req, res) => {
 
 
 
-router.get('/api/users/:name?', async (req, res) => {
+router.get('/api/users/:name', async (req, res) => {
     try {
         res.json((await db.Users.userName(req.params.name))[0])
     } catch (err) {
