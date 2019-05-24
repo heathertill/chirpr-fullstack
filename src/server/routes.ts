@@ -40,14 +40,16 @@ router.get('/api/users/:name', async (req, res) => {
     }
 });
 
-// router.get('/api/users/:name', async (req, res) => {
-//     try {
-//         res.json((await db.Users.newUsersName(req.params.name))[0])
-//     } catch (err) {
-//         console.log(err);
-//         res.sendStatus(500);
-//     }
-// });
+router.get('/api/users', async (req, res) => {
+    try {
+        res.json(await db.Users.allUserNames())
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+})
+
+
 
 router.get('/api/mentions/:userid', async (req, res) => {
     try {

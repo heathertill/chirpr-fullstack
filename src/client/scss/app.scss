@@ -2,6 +2,11 @@
 $theme-colors: (
     'blueCh': rgba(126, 171, 206, 0.7)
 );
+$theme-colors: (
+  "primary": rgba(126, 171, 206, 0.7),
+  "secondary": darkgrey,
+  "success": gainsboro
+);
 
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 

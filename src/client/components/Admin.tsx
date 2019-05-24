@@ -88,8 +88,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
                             />
                         </div>
                         <div className="text-right">
-                            <button className="btn btn-blueCh m-1" onClick={this.handleEdit}>Edit</button>
-                            <button className="btn btn-blueCh" onClick={this.handleDelete}>Delete</button>
+                            <button className="btn btn-primary m-1" onClick={this.handleEdit}>Edit</button>
+                            <button className="btn btn-primary" onClick={this.handleDelete}>Delete</button>
                         </div>
                     </div>
                 </div>

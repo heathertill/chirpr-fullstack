@@ -8,7 +8,8 @@ export interface AddChirpState {
     name: string;
     text: string;
     id: number;
-    userid: number
+    userid: number;
+    users: { name: string, id: number }[];
 }
 
 class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
@@ -18,16 +19,24 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
             name: '',
             text: '',
             id: null,
-            userid: null
+            userid: null,
+            users: []
         }
         this.handleUserName = this.handleUserName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+
+    async componentWillMount() {
+        let res = await fetch('/api/users');
+        let users = await res.json();
+        console.log(users);
+        this.setState({ users })
+    };
+
     handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-        // this.handleUserName();
-        console.log('name:', this.state.name, 'userid:', this.state.userid, 'id:', this.state.id);
+        console.log('handlesubmit', 'name:', this.state.name, 'userid:', this.state.userid, 'id:', this.state.id, 'users:', this.state.users);
         let name = this.state.name;
         let text = this.state.text;
         return (
@@ -58,39 +67,48 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
     //     }
     // };
 
-    async checkMention(str: string) {
-        let mention = str.includes('@')
+    async checkMention(text: string) {
+        let mention = text.includes('@')
         if (mention === true) {
-            console.log('true');
+            console.log('check mention true');
         } else {
-            console.log('false')
+            console.log('check mention false')
         }
     };
 
     async handleUserName(name: string, text: string) {
-        try {
-            let r = await fetch(`/api/users/${name}`);
-            let userid = await r.json();
-            this.setState(userid[0]);
-            console.log('userid:',userid, 'name:', name, 'text:', text)
-        } catch (err) {
-            console.log(err);
-        }
-        finally {
-            let data = { userid: this.state.userid, text: this.state.text }
-            await fetch('/api/chirps/', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-type": "application/json"
-                },
-            });
-            this.props.history.push('/');
-            this.checkMention(text);
-            console.log('fired')
+        if (this.state.name && this.state.text) {
+            try {
+                let r = await fetch(`/api/users/${name}`);
+                let userid = await r.json();
+                this.setState(userid[0]);
+                console.log('hun step 1', 'userid:', userid, 'name:', name, 'text:', text)
+            } catch (err) {
+                console.log('hun step 2', err);
+            }
+            finally {
+                let data = { userid: this.state.userid, text: this.state.text }
+                await fetch('/api/chirps/', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                });
+                this.props.history.push('/');
+                this.checkMention(text);
+                console.log('hun step 3 fired')
+            }
+        } else {
+            alert('need name and text')
         }
     };
 
+    renderUsers() {
+        return this.state.users.map(user => {
+            return <option key={user.id}>{user.name}</option>
+        })
+    }
 
     render() {
         return (
@@ -105,10 +123,18 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                         <input
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ text: e.target.value })}
                             type="text" className="form-control" value={this.state.text} />
-                        <div className="text-right pt-3">
-                            <button className="btn btn-blueCh btn-outline-light text-right"
+                        <div className="d-flex justify-content-between m-3">
+                            <div>
+                            <select className="form-control text-secondary">
+                                <option >List of User Names</option>
+                                {this.renderUsers()}
+                            </select>
+                            </div>
+                            <div>
+                            <button className="btn btn-primary btn-outline-light"
                                 onClick={this.handleSubmit}
                             >Submit</button>
+                            </div>
                         </div>
                     </form>
                 </div>
