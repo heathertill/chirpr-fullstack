@@ -4,12 +4,6 @@ import db from './db';
 
 const router = express.Router();
 
-router.get('/api/hello', (req, res, next) => {
-    res.json('World');
-});
-
-
-
 router.get('/api/chirps/:id?', async (req, res) => {
     let id = req.params.id
     if (id) {
@@ -29,11 +23,18 @@ router.get('/api/chirps/:id?', async (req, res) => {
     }
 });
 
-
-
 router.get('/api/users/:name', async (req, res) => {
     try {
         res.json((await db.Users.userName(req.params.name))[0])
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+router.get('/api/name/:id', async (req, res) => {
+    try {
+        res.json((await db.Name.getMentName(req.params.id))[0])
     } catch (err) {
         console.log(err);
         res.sendStatus(500);
@@ -47,9 +48,17 @@ router.get('/api/users', async (req, res) => {
         console.log(err);
         res.sendStatus(500);
     }
-})
+});
 
-
+router.post('/api/mentions', async (req, res) => {
+    try {
+        let newMention = await db.Mentions.createMention(req.body.userid, req.body.chirpid);
+        res.json(newMention)
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
 
 router.get('/api/mentions/:userid', async (req, res) => {
     try {
@@ -62,15 +71,8 @@ router.get('/api/mentions/:userid', async (req, res) => {
 
 
 
-router.post('/api/mentions', async (req, res) => {
-    try {
-        let newMention = await db.Mentions.createMention(req.body.userid, req.body.chirpid);
-        res.json(newMention)
-    } catch (err) {
-        console.log(err);
-        res.sendStatus(500);
-    }
-})
+
+
 
 router.post('/api/chirps', async (req, res) => {
     try {
