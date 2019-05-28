@@ -12,7 +12,7 @@ const ChirpCard: React.SFC<ChirpCardProps> = (props) => {
             <div className="card p-2 m-3 shadow">
                 <div className="card-body">
                     <h4 className="card-title">{props.chirp.name}</h4>
-                    <p className="card-title">{props.chirp.text}</p>
+                    <p className="card-text">{props.chirp.text}</p>
                     <div>
                         <div className="text-right">
                             <Link className="btn btn-primary" to={`/${props.chirp.id}/admin`}>Options</Link>

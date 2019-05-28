@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ChirpCard from './ChirpCard'
+import MentionCard from './MentionCard'
 
 export interface MentionsProps {
 
@@ -34,7 +34,7 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
 
     renderUsers() {
         return this.state.users.map(user => {
-            return <option value={user.id}>{user.name}</option>
+            return <option key={user.id} value={user.id}>{user.name}</option>
         })
     };
 
@@ -42,40 +42,37 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
         this.setState({ selectedUserId: e.target.value });
     };
 
-    // handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-    //     console.log('selectedUserId1:', this.state.selectedUserId)
-    // }
-
-    // async handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-    //     let id = this.state.selectedUserId
-    //     e.preventDefault();
-    //     let res = await fetch(`/api/mentions/${id}`);
-    //     let chirps = await res.json();
-    //     console.log(chirps);
-    //     chirps.pop();
-    //     this.setState({ chirps })
-    // }
-
-    async handleSubmit() {
+    async handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         let id = this.state.selectedUserId
-        try {
-            let r = await fetch(`/api/name/${id}`);
-            let mentioner = await r.json();
-            this.setState(mentioner);
-            console.log('selectedUserId1:', this.state.selectedUserId)
-            console.log('menHun step 1', 'mentioner:', mentioner)
-        } catch (err) {
-            console.log('menHun step 2', err);
-        }
-        finally {
-            let res = await fetch(`/api/mentions/${id}`);
-            let chirps = await res.json();
-            console.log(chirps);
-            chirps.pop();
-            this.setState({ chirps })
-            console.log('menHun step 3 fired')
-        }
-    };
+        e.preventDefault();
+        let res = await fetch(`/api/mentions/${id}`);
+        let chirps = await res.json();
+        console.log('chirps:', chirps);
+        chirps.pop();
+        this.setState( chirps );
+        console.log('menHun step 3 fired');
+    }
+
+    // async handleSubmit() {
+    //     let id = this.state.selectedUserId
+    //     try {
+    //         let r = await fetch(`/api/name/${id}`);
+    //         let mentioner = await r.json();
+    //         this.setState(mentioner);
+    //         console.log('selectedUserId1:', this.state.selectedUserId)
+    //         console.log('menHun step 1', 'mentioner:', mentioner)
+    //     } catch (err) {
+    //         console.log('menHun step 2', err);
+    //     }
+    //     finally {
+    //         let res = await fetch(`/api/mentions/${id}`);
+    //         let chirps = await res.json();
+    //         console.log(chirps);
+    //         chirps.pop();
+    //         this.setState({ chirps })
+    //         console.log('menHun step 3 fired')
+    //     }
+    // };
 
     render() {
         return (
@@ -99,7 +96,7 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
 
                 <div className="col-md-9">
                     {this.state.chirps.map(chirp => {
-                        return <ChirpCard key={chirp.id} chirp={chirp} />
+                        return <MentionCard key={chirp.id} chirp={chirp} />
                     })}
                 </div>
             </>

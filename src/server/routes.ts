@@ -50,6 +50,15 @@ router.get('/api/users', async (req, res) => {
     }
 });
 
+router.get('/api/mentions/:userid', async (req, res) => {
+    try {
+        res.json((await db.Mentions.getAllMentions(req.params.userid))[0])
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
 router.post('/api/mentions', async (req, res) => {
     try {
         let newMention = await db.Mentions.createMention(req.body.userid, req.body.chirpid);
@@ -60,14 +69,7 @@ router.post('/api/mentions', async (req, res) => {
     }
 });
 
-router.get('/api/mentions/:userid', async (req, res) => {
-    try {
-        res.json(await db.Mentions.getAllMentions(req.params.userid))
-    } catch (err) {
-        console.log(err);
-        res.sendStatus(500);
-    }
-});
+
 
 
 
