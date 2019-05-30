@@ -27,7 +27,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         try {
             let resChirp = await fetch(`/api/chirps/${id}`);
             let chirp = await resChirp.json();
-            console.log(chirp);
             this.setState({ chirp })
         } catch (err) {
             console.log(err)

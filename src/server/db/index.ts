@@ -4,6 +4,7 @@ import Chirps from './chirps';
 import Users from './users';
 import Mentions from './mentions';
 import Name from './name';
+import MentionName from './mentionName';
 
 export const Connection = mysql.createConnection({
     host: 'localhost',
@@ -30,7 +31,8 @@ export default {
     Chirps,
     Users,
     Mentions,
-    Name
+    Name,
+    MentionName
 }
 
 /// import each table from your database here

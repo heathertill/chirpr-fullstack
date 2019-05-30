@@ -21,7 +21,6 @@ class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
         let chirps = await res.json();
         chirps.pop();
         this.setState({ chirps })
-        console.log('allChirps:', chirps)
     };
 
     render() {

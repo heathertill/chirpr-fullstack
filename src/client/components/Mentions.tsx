@@ -1,15 +1,12 @@
 import * as React from 'react';
-import MentionCard from './MentionCard'
 
-export interface MentionsProps {
-
-}
+export interface MentionsProps { }
 
 export interface MentionsState {
     users: { name: string, id: number }[];
-    chirps: { id: number, name: string, text: string, _created: Date }[];
-    selectedUserId: string;
-    mentioner: string;
+    chirps: { id: number, userid: number, text: string, _created: Date }[];
+    selectedUserId: any;
+    mentions: { id: number }[];
 }
 
 class Mentions extends React.Component<MentionsProps, MentionsState> {
@@ -19,7 +16,7 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
             users: [],
             chirps: [],
             selectedUserId: "",
-            mentioner: ""
+            mentions: [],
         };
         this.handleSelectedUserChange = this.handleSelectedUserChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +25,6 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
     async componentWillMount() {
         let res = await fetch('/api/users');
         let users = await res.json();
-        console.log('users:', users);
         this.setState({ users })
     };
 
@@ -38,46 +34,26 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
         })
     };
 
-    handleSelectedUserChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    async handleSelectedUserChange(e: React.ChangeEvent<HTMLSelectElement>) {
         this.setState({ selectedUserId: e.target.value });
     };
 
     async handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-        let id = this.state.selectedUserId
-        e.preventDefault();
-        let res = await fetch(`/api/mentions/${id}`);
-        let chirps = await res.json();
-        console.log('chirps:', chirps);
-        chirps.pop();
-        this.setState( chirps );
-        console.log('menHun step 3 fired');
-    }
-
-    // async handleSubmit() {
-    //     let id = this.state.selectedUserId
-    //     try {
-    //         let r = await fetch(`/api/name/${id}`);
-    //         let mentioner = await r.json();
-    //         this.setState(mentioner);
-    //         console.log('selectedUserId1:', this.state.selectedUserId)
-    //         console.log('menHun step 1', 'mentioner:', mentioner)
-    //     } catch (err) {
-    //         console.log('menHun step 2', err);
-    //     }
-    //     finally {
-    //         let res = await fetch(`/api/mentions/${id}`);
-    //         let chirps = await res.json();
-    //         console.log(chirps);
-    //         chirps.pop();
-    //         this.setState({ chirps })
-    //         console.log('menHun step 3 fired')
-    //     }
-    // };
+        let id = this.state.selectedUserId;
+        try {
+            e.preventDefault();
+            let res = await fetch(`/api/mentions/${id}`);
+            let chirps = await res.json();
+            this.setState({ chirps });
+        } catch (err) {
+            console.log(err)
+        }
+    };
 
     render() {
         return (
             <>
-                <div className="card col-md-12 m-4 p-5">
+                <div className="card col-md-9 m-4 p-5">
                     <div className="card-body p-0">
                         <div className="card-title">Show Mentions for ...</div>
                         <select value={this.state.selectedUserId}
@@ -93,10 +69,19 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
                         </div>
                     </div>
                 </div>
-
-                <div className="col-md-9">
+                <div className="col-md-9 p-0">
                     {this.state.chirps.map(chirp => {
-                        return <MentionCard key={chirp.id} chirp={chirp} />
+                        return (
+                            <div key={chirp.id} className="card mb-4 p-5 shadow-lg">
+                                <div className="card-header">User: {chirp.userid}</div>
+                                <div className="card-body">
+                                    <h5>Chirped:</h5>
+                                    <h4 className="card-title">{chirp.text}</h4>
+                                    <p>On: {chirp._created}</p>
+                                    {/* {this.chirpName(chirp.userid)} */}
+                                </div>
+                            </div>
+                        )
                     })}
                 </div>
             </>
@@ -105,3 +90,5 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
 }
 
 export default Mentions;
+
+

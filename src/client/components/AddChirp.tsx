@@ -30,13 +30,11 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
     async componentWillMount() {
         let res = await fetch('/api/users');
         let users = await res.json();
-        console.log(users);
         this.setState({ users })
     };
 
     handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-        console.log('handlesubmit', 'name:', this.state.name, 'userid:', this.state.userid, 'id:', this.state.id, 'users:', this.state.users);
         let name = this.state.name;
         let text = this.state.text;
         return (
@@ -82,9 +80,8 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 let r = await fetch(`/api/users/${name}`);
                 let userid = await r.json();
                 this.setState(userid[0]);
-                console.log('hun step 1', 'userid:', userid, 'name:', name, 'text:', text)
             } catch (err) {
-                console.log('hun step 2', err);
+                console.log(err);
             }
             finally {
                 let data = { userid: this.state.userid, text: this.state.text }
@@ -97,10 +94,9 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 });
                 this.props.history.push('/');
                 this.checkMention(text);
-                console.log('hun step 3 fired')
             }
         } else {
-            alert('need name and text')
+            alert('Please include name and text')
         }
     };
 

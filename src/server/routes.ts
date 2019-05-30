@@ -69,7 +69,14 @@ router.post('/api/mentions', async (req, res) => {
     }
 });
 
-
+router.get('/api/mentionName/:userid', async (req, res) => {
+    try {
+        res.json((await db.MentionName.getMentions(req.params.userid))[0])
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+})
 
 
 
