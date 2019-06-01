@@ -7,10 +7,11 @@ export interface AddChirpProps extends RouteComponentProps<{ name: string }> { }
 export interface AddChirpState {
     name: string;
     text: string;
-    id: number;
     userid: number;
     users: { name: string, id: number }[];
+    chirpId: any;
 }
+
 
 class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
     constructor(props: AddChirpProps) {
@@ -18,16 +19,17 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         this.state = {
             name: '',
             text: '',
-            id: null,
             userid: null,
-            users: []
+            users: [],
+            chirpId: undefined,
         }
         this.handleUserName = this.handleUserName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.checkMention = this.checkMention.bind(this);
     }
 
 
-    async componentWillMount() {
+    async componentDidMount() {
         let res = await fetch('/api/users');
         let users = await res.json();
         this.setState({ users })
@@ -40,38 +42,47 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         return (
             this.handleUserName(name, text)
         );
-    }
+    };
 
+    filterItems(arr: any, query: any) {
+        return arr.filter(function(el: any) {
+            return el.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+        })
+    };
 
-    // async checkMention(str: string) {
-    //     let mention = str.includes('@')
-    //     if (mention === true) {
-    //         console.log('true');
-    //         try {
-    //             let data = { userid: this.state.userid, id: this.state.id }
-    //             await fetch('api/mentions/', {
-    //                 method: 'POST',
-    //                 body: JSON.stringify(data),
-    //                 headers: {
-    //                     "Content-type": "application/json"
-    //                 },
-    //             });
-    //             // this.props.history.push('/');
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     } else {
-    //         console.log('false')
-    //     }
-    // };
+    returnName(str: string) {
+        let a = str.split(' ');
+        let re = /\s*(@)s*/;
+        let name = this.filterItems(a, '@').toString().split(re);
+        console.log('name[2]', name[2]);
+        return name[2]
+    };
 
     async checkMention(text: string) {
-        let mention = text.includes('@')
+        let mention = text.includes('@');
+        let mentionText = this.state.text;
+        let wasMentioned = this.returnName(mentionText);
         if (mention === true) {
+            try {
+                let r = await fetch(`/api/users/${wasMentioned}`);
+                let mentId = await r.json();
+                let data = { userid: mentId[0].userid, chirpid: this.state.chirpId }
+                console.log('mentionedId:', mentId[0].userid, 'chirpid:', this.state.chirpId, 'data:', data);
+                await fetch('/api/mentions/', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                });
+                this.props.history.push('/');
+            } catch (err) {
+                console.log(err)
+            } 
             console.log('check mention true');
         } else {
             console.log('check mention false')
-        }
+        };
     };
 
     async handleUserName(name: string, text: string) {
@@ -84,14 +95,17 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 console.log(err);
             }
             finally {
-                let data = { userid: this.state.userid, text: this.state.text }
-                await fetch('/api/chirps/', {
+                let data = { userid: this.state.userid, text: this.state.text };
+                let res = await fetch('/api/chirps/', {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
                         "Content-type": "application/json"
                     },
                 });
+                let info = await res.json();
+                this.setState({ chirpId: info.insertId })
+                console.log('insertId', this.state.chirpId, 'data2:', data)
                 this.props.history.push('/');
                 this.checkMention(text);
             }
@@ -121,15 +135,15 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                             type="text" className="form-control" value={this.state.text} />
                         <div className="d-flex justify-content-between m-3">
                             <div>
-                            <select className="form-control text-secondary">
-                                <option >List of User Names</option>
-                                {this.renderUsers()}
-                            </select>
+                                <select className="form-control text-secondary">
+                                    <option >List of User Names</option>
+                                    {this.renderUsers()}
+                                </select>
                             </div>
                             <div>
-                            <button className="btn btn-primary btn-outline-light"
-                                onClick={this.handleSubmit}
-                            >Submit</button>
+                                <button className="btn btn-primary btn-outline-light"
+                                    onClick={this.handleSubmit}
+                                >Submit</button>
                             </div>
                         </div>
                     </form>

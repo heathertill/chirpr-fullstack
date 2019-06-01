@@ -78,7 +78,6 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
                                     <h5>Chirped:</h5>
                                     <h4 className="card-title">{chirp.text}</h4>
                                     <p>On: {chirp._created}</p>
-                                    {/* {this.chirpName(chirp.userid)} */}
                                 </div>
                             </div>
                         )
