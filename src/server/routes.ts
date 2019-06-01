@@ -89,8 +89,6 @@ router.post('/api/chirps', async (req, res) => {
 // takes chirpid and  text and edits existing chirp
 router.put('/api/chirps/:id', async (req, res) => {
     try {
-        // let id = req.params.id;
-        // let text = req.body.text;
         res.json(await db.Chirps.updateChirp(req.body.text, req.params.id));
 
     } catch (err) {
