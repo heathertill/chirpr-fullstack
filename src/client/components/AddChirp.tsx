@@ -28,7 +28,6 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         this.checkMention = this.checkMention.bind(this);
     }
 
-
     async componentDidMount() {
         let res = await fetch('/api/users');
         let users = await res.json();
@@ -45,7 +44,7 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
     };
 
     filterItems(arr: any, query: any) {
-        return arr.filter(function(el: any) {
+        return arr.filter(function (el: any) {
             return el.toLowerCase().indexOf(query.toLowerCase()) !== -1;
         })
     };
@@ -54,7 +53,6 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
         let a = str.split(' ');
         let re = /\s*(@)s*/;
         let name = this.filterItems(a, '@').toString().split(re);
-        console.log('name[2]', name[2]);
         return name[2]
     };
 
@@ -67,7 +65,6 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 let r = await fetch(`/api/users/${wasMentioned}`);
                 let mentId = await r.json();
                 let data = { userid: mentId[0].userid, chirpid: this.state.chirpId }
-                console.log('mentionedId:', mentId[0].userid, 'chirpid:', this.state.chirpId, 'data:', data);
                 await fetch('/api/mentions/', {
                     method: 'POST',
                     body: JSON.stringify(data),
@@ -78,7 +75,7 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 this.props.history.push('/');
             } catch (err) {
                 console.log(err)
-            } 
+            }
             console.log('check mention true');
         } else {
             console.log('check mention false')
@@ -105,7 +102,6 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
                 });
                 let info = await res.json();
                 this.setState({ chirpId: info.insertId })
-                console.log('insertId', this.state.chirpId, 'data2:', data)
                 this.props.history.push('/');
                 this.checkMention(text);
             }

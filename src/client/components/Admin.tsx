@@ -48,7 +48,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
                 },
                 body: JSON.stringify(data)
             });
-            // this.setState({text: this.state.text})
             this.props.history.replace('/');
         } catch (err) {
             console.log(err)
