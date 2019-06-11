@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-
-export interface IAdminProps extends RouteComponentProps<{ id: string }> { }
-
+                                                                            // generic RouteCompProps
+export interface IAdminProps extends RouteComponentProps<{ id: string }> { } // routeCompProp always gets passed as a string
+                                                                            // subGeneric {id: string} is the match object
 export interface IAdminState {
 
     chirp: { id: number; name: string; text: string }
@@ -43,8 +43,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         try {
             await fetch(`/api/chirps/${id}`, {
                 method: 'PUT',
-                headers: {
-                    "Content-type": "application/json"
+                headers: {                              // headers and body turn on express.json()
+                    "Content-type": "application/json"  // from server.ts
                 },
                 body: JSON.stringify(data)
             });
@@ -65,6 +65,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             console.log(err)
         }
     }
+
+  
 
     handleTextChange(value: string) {
         this.state.chirp.text = value

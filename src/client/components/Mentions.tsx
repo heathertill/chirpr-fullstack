@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 
 export interface MentionsProps { }
 
@@ -77,7 +78,7 @@ class Mentions extends React.Component<MentionsProps, MentionsState> {
                                 <div className="card-body">
                                     <h5>Chirped:</h5>
                                     <h4 className="card-title">{chirp.text}</h4>
-                                    <p>On: {chirp._created}</p>
+                                    <p>On: {moment(chirp._created).format('MMMM Do YYYY, h:mm:ss a')}</p>
                                 </div>
                             </div>
                         )

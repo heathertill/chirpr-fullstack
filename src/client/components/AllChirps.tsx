@@ -19,7 +19,6 @@ class AllChirps extends React.Component<AllChirpsProps, AllChirpsState> {
     async componentWillMount() {
         let res = await fetch('/api/chirps');
         let chirps = await res.json();
-        chirps.pop();
         this.setState({ chirps })
     };
 

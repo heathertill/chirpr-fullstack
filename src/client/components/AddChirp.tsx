@@ -21,7 +21,7 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
             text: '',
             userid: null,
             users: [],
-            chirpId: undefined,
+            chirpId: undefined
         }
         this.handleUserName = this.handleUserName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -87,7 +87,9 @@ class AddChirp extends React.Component<AddChirpProps, AddChirpState> {
             try {
                 let r = await fetch(`/api/users/${name}`);
                 let userid = await r.json();
+                console.log('userid', userid)
                 this.setState(userid[0]);
+                console.log('userid', userid)
             } catch (err) {
                 console.log(err);
             }

@@ -13,7 +13,8 @@ export interface AppProps { }
 
 const App: React.SFC<AppProps> = () => {
     return (
-        <Router>
+        // wraping entire app in the router allows for this.props.history, location, match..
+        <Router> 
             <main className="container-fluid p-0">
                 <Navbar />
                 <section className="container">

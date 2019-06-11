@@ -14,6 +14,17 @@ router.get('/api/name/:id', async (req, res) => {
     }
 });
 
+// different way to destructure the route.
+// router.get('/api/name/:id', async (req, res) => {
+//     try {
+//         let [name] = await db.Name.getMentName(req.params.id);
+//         res.json(name)
+//     } catch (err) {
+//         console.log(err);
+//         res.sendStatus(500);
+//     }
+// })
+
 // gets all users id and name
 router.get('/api/users', async (req, res) => {
     try {
