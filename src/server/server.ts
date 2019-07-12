@@ -21,7 +21,7 @@ app.get('*', (req, res) => {
 });
 
 
-const port = process.env.PORT || 3001; // process.env.PORT is used for deployment (i.e. Heroku)
+const port = process.env.PORT || 3000; // process.env.PORT is used for deployment (i.e. Heroku)
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);
 });
